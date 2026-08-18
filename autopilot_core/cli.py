@@ -24,7 +24,7 @@ def run_probe(*, root: str | Path, runner_id: str, controller_sha: str | None) -
     sha = (
         normalize_controller_sha(controller_sha)
         if controller_sha
-        else controller_sha_from_env(required=False) or ("0" * 40)
+        else controller_sha_from_env(required=True)
     )
     store = FileRuntimeStore(root)
     plane = ControlPlane(store)
