@@ -2,7 +2,7 @@ from datetime import datetime, timedelta, timezone
 
 import pytest
 
-from autopilot_core.control_plane import ControlPlane, LeaseBusyError
+from autopilot_core.control_plane import ControlPlane, HandoffError, LeaseBusyError
 from autopilot_core.store import FileRuntimeStore
 
 
@@ -89,3 +89,15 @@ def test_handoff_requires_named_receiver_and_records_acceptance(tmp_path):
     assert record["state"] == "ACCEPTED"
     assert record["payload"]["token"] == "***"
     assert record["receiver_run_id"] == secondary.run_id
+
+
+def test_handoff_rejects_different_controller_build(tmp_path):
+    clock = FakeClock()
+    store = FileRuntimeStore(tmp_path)
+    plane = ControlPlane(store, clock=clock)
+    primary = plane.start_run("primary", "a" * 40)
+    handoff_id = plane.offer_handoff(primary, "secondary")
+
+    secondary = plane.start_run("secondary", "b" * 40)
+    with pytest.raises(HandoffError, match="controller SHA"):
+        plane.accept_handoff(secondary, handoff_id)
