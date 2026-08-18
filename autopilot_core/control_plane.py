@@ -215,6 +215,8 @@ class ControlPlane:
             raise HandoffError("handoff is not open")
         if record.get("receiver_runner_id") != ctx.runner_id:
             raise HandoffError("handoff receiver does not match this runner")
+        if record.get("controller_sha") != ctx.controller_sha:
+            raise HandoffError("handoff controller SHA does not match receiving run")
         record["state"] = "ACCEPTED"
         record["accepted_at"] = _iso(self.clock())
         record["receiver_run_id"] = ctx.run_id
