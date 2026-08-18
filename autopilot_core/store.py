@@ -16,7 +16,11 @@ class FileRuntimeStore:
         self.root = Path(root)
 
     def _path(self, *parts: str) -> Path:
-        return self.root.joinpath(*parts)
+        root = self.root.resolve()
+        candidate = self.root.joinpath(*parts).resolve()
+        if candidate != root and root not in candidate.parents:
+            raise ValueError("runtime store path escapes configured root")
+        return candidate
 
     def read_json(self, *parts: str) -> dict[str, Any] | None:
         path = self._path(*parts)
