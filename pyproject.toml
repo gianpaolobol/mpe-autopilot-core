@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "guarded-autopilot-core"
+version = "0.1.0"
+description = "Reusable guarded autonomous controller core and reliability primitives"
+requires-python = ">=3.12"
+dependencies = []
+
+[project.optional-dependencies]
+test = ["pytest>=8.0"]
+
+[project.scripts]
+autopilot-core = "autopilot_core.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["autopilot_core*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
