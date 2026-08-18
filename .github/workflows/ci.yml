@@ -6,6 +6,7 @@ on:
       - main
       - 'bootstrap/**'
       - 'refactor/**'
+      - 'hardening/**'
   pull_request:
 
 permissions:
@@ -31,3 +32,10 @@ jobs:
         run: python -m pip install -e '.[test]'
       - name: Test
         run: python -m pytest -q
+      - name: Control-plane smoke probe
+        env:
+          AUTOPILOT_CONTROLLER_SHA: ${{ github.sha }}
+        run: >-
+          python -m autopilot_core probe
+          --root "$RUNNER_TEMP/autopilot-core-probe"
+          --runner-id github-ci
