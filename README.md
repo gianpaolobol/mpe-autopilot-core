@@ -1,5 +1,7 @@
 # Guarded Autopilot Core
 
+> **Copyright © 2026 Gian Paolo Franceschini** — Diritti riservati ai soli contributi originali di sua legittima titolarità, senza pregiudizio per i diritti e le licenze di terzi. Vedi la [dichiarazione di tutela](RIGHTS_NOTICE.md) e [COPYRIGHT](COPYRIGHT).
+
 A small, reusable control-plane core for guarded autonomous workers.
 
 This public repository intentionally contains only generic reliability primitives:
